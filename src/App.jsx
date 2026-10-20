@@ -41,9 +41,10 @@ function App() {
         <header className={`flex shrink-0 justify-center border-b-2 border-white/10 ${compactView ? 'mb-3 pb-3' : 'mb-8 pb-7 sm:mb-10 sm:pb-8'}`}>
           <div className="flex items-center justify-center gap-3 sm:gap-[18px]">
             <img src="/data/logo_start.png" alt="Logo Start" className={`${compactView ? 'h-9 sm:h-10' : 'h-12 sm:h-[65px]'} w-auto`} />
-            <div className={`flex items-center gap-1 font-brand leading-none text-white ${compactView ? 'text-2xl sm:text-3xl' : 'text-3xl sm:text-[2.6rem]'}`}>
-              <span className="font-extrabold tracking-tight">Start</span>
-              <span className="font-normal italic">{screen === 'home' ? '_Engenharias' : '_Cards'}</span>
+            <div className={`flex items-baseline font-brand font-semibold italic leading-none tracking-tight text-white ${compactView ? 'text-2xl sm:text-3xl' : 'text-3xl sm:text-[2.6rem]'}`}>
+              <span className="lowercase">start</span>
+              <span className="text-cyan-400 not-italic">_</span>
+              <span>{screen === 'home' ? 'Engenharias' : 'Cards'}</span>
             </div>
           </div>
         </header>

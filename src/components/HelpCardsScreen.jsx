@@ -52,10 +52,10 @@ export default function HelpCardsScreen({
   return (
     <section className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col text-white" aria-labelledby="help-title">
       <div className="mb-2 flex shrink-0 items-center justify-between gap-2">
-        <button type="button" onClick={onBack} className="rounded-lg px-3 py-1 text-left text-xs font-semibold text-white/80 transition hover:bg-white/10 hover:text-white sm:text-sm">← Voltar ao menu principal</button>
+        <button type="button" onClick={onBack} className="inline-flex min-h-10 items-center rounded-xl border border-white/25 bg-white/10 px-4 py-2 text-left text-xs font-semibold text-white shadow-sm transition hover:border-cyan-300/70 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-300 sm:text-sm">← Voltar ao menu principal</button>
         <span className="shrink-0 text-xs text-white/70">{currentIndex + 1} / {cards.length}</span>
       </div>
-      <h2 id="help-title" className="shrink-0 text-xl font-bold sm:text-2xl">Cartas de Ajuda</h2>
+      <h2 id="help-title" className="shrink-0 text-xl font-semibold tracking-tight sm:text-2xl">Cartas de Ajuda</h2>
       <p className="mt-1 shrink-0 text-xs text-white/70 sm:text-sm">Selecione uma carta para ver seus detalhes.</p>
       <div className="mt-3 grid min-h-0 flex-1 grid-cols-1 grid-rows-[minmax(0,1fr)_minmax(0,1fr)] gap-3 md:grid-cols-2 md:grid-rows-1 md:gap-6 [@media(max-height:500px)]:grid-cols-2 [@media(max-height:500px)]:grid-rows-1">
         <div className="flex min-h-0 min-w-0 flex-col items-center justify-center">
@@ -73,8 +73,7 @@ export default function HelpCardsScreen({
           <button type="button" onClick={onUseCard} disabled={selectedCardId === null} className="mt-1 min-h-10 w-full shrink-0 rounded-xl bg-amber-400 px-4 py-2 text-sm font-bold text-indigo-950 transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:opacity-50 sm:mt-2">Usar Carta de Ajuda</button>
         </div>
         <aside className="flex min-h-0 flex-col justify-center overflow-y-auto rounded-2xl border border-white/15 bg-white/[.06] p-4 text-left sm:p-5" aria-live="polite">
-          <p className="text-[10px] font-bold uppercase tracking-[.2em] text-amber-300">{currentCard.title}</p>
-          <h3 className="mt-1 text-lg font-bold uppercase sm:text-xl">{currentCard.title}</h3>
+          <h3 className="text-lg font-semibold leading-tight tracking-tight sm:text-xl">{currentCard.title}</h3>
           <div className="mt-3 space-y-2.5 text-xs leading-relaxed text-white/80 sm:text-sm">
             <p><strong className="text-white">Contexto:</strong> {currentCard.context}</p>
             <p><strong className="text-white">Efeito:</strong> {currentCard.effect}</p>

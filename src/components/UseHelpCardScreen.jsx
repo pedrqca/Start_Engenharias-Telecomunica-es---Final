@@ -24,11 +24,11 @@ export default function UseHelpCardScreen({ card, onBack, onAuthorized }) {
 
   return (
     <section className="mx-auto max-w-xl text-white" aria-labelledby="use-help-title">
-      <button type="button" onClick={onBack} className="mb-6 rounded-lg px-4 py-2 text-sm font-semibold text-white/80 transition hover:bg-white/10 hover:text-white">← Voltar para Cartas de Ajuda</button>
-      <h2 id="use-help-title" className="text-2xl font-bold sm:text-3xl">Usar Carta de Ajuda</h2>
+      <button type="button" onClick={onBack} className="mb-6 inline-flex min-h-11 items-center rounded-xl border border-white/25 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:border-cyan-300/70 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-300">← Voltar para Cartas de Ajuda</button>
+      <h2 id="use-help-title" className="text-2xl font-semibold tracking-tight sm:text-3xl">Usar Carta de Ajuda</h2>
       <p className="mt-2 text-sm text-white/70">Apresente a senha da organização para confirmar o uso.</p>
       <div className="mx-auto mt-6 max-w-sm rounded-2xl bg-white p-6 text-left text-indigo-950 shadow-xl">
-        <h3 className="text-xl font-bold">{card.title}</h3>
+        <h3 className="text-xl font-semibold tracking-tight">{card.title}</h3>
         {status === 'success' ? <div className="mt-4 rounded-xl bg-green-50 p-4 text-center text-green-800" role="status">
           <p className="font-bold">Senha validada!</p>
           <p className="mt-1 text-sm">{card.title} foi liberada.</p>
