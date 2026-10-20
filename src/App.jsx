@@ -70,10 +70,52 @@ function App() {
   }
 
   const cards = [
-    { title: 'Apostila', description: 'Material Didático e Guia de Práticas.', href: '/data/classificatoria.pdf', type: 'pdf', tone: 'blue' },
+    { title: 'Apostila', description: 'Material Didático e Guia de Práticas.', href: '/data/revisao-final-2026.pdf', type: 'pdf', tone: 'blue' },
     { title: 'Tabela de Cores', description: 'Consulta rápida de cores para o LED RGB.', href: '/data/Tabela%20de%20Cores%20RGB.pdf', type: 'rgb', tone: 'teal' },
   ]
-  const helpCards = Array.from({ length: 5 }, (_, index) => ({ id: index + 1, title: `Carta ${index + 1}` }))
+  const helpCards = [
+    {
+      id: 1,
+      title: 'Diagnóstico de Bordo',
+      purpose: '🐛 Debug',
+      context: 'Uma anomalia foi detectada no sistema. Antes de alterar qualquer protocolo, a tripulação pode solicitar um diagnóstico da central.',
+      effect: 'A organização executa ou testa o código da equipe e informa o primeiro comportamento incorreto encontrado, sem indicar como corrigi-lo.',
+      examples: ['Quando o botão é pressionado, o LED não apaga.', 'O servo não está atingindo a posição esperada.', 'Quando os dois botões são pressionados, o sistema não entra no estado de conflito.'],
+    },
+    {
+      id: 2,
+      title: 'Chave da Nave',
+      purpose: '🧠 Entendimento',
+      context: 'Os sistemas da nave possuem inúmeros protocolos. Entre eles, existe uma chave capaz de revelar o caminho necessário para prosseguir.',
+      effect: 'A equipe recebe uma dica sobre o principal conceito de programação necessário para resolver a missão, sem receber código ou a solução.',
+      examples: ['A solução depende de verificar duas entradas simultaneamente.', 'O valor recebido precisa ser convertido antes de controlar o servo.', 'O sistema precisa manter o estado atual entre os comandos.'],
+    },
+    {
+      id: 3,
+      title: 'Fragmento do Código Proibido',
+      purpose: '💻 Código',
+      context: 'Uma transmissão antiga foi recuperada dos arquivos da estação. O código está incompleto, mas um fragmento permanece intacto.',
+      effect: 'A equipe recebe um pequeno trecho de código relacionado à solução da missão e precisa descobrir onde e como utilizá-lo. O fragmento nunca representa a solução completa.',
+      examples: ['int valor = analogRead(A0);', 'servo.write(90);'],
+    },
+    {
+      id: 4,
+      title: 'Visão do Futuro',
+      purpose: '🔭 Teste',
+      context: 'O sistema de navegação conseguiu simular um possível cenário futuro. Agora a equipe sabe o que deveria acontecer em uma determinada situação.',
+      effect: 'A equipe recebe um caso de teste contendo uma condição e o comportamento esperado.',
+      examples: ['Entrada: Botão 1 + Botão 2 pressionados → Esperado: sistema entra em estado de conflito.', 'Entrada: Potenciômetro = 750 → Esperado: servo assume determinada posição ou estado.'],
+    },
+    {
+      id: 5,
+      title: 'Módulo de Emergência',
+      purpose: '🔧 Montagem',
+      context: 'O sistema de montagem automática da estação foi ativado. Toda a infraestrutura necessária para a missão já está pronta.',
+      effect: 'A organização entrega a montagem física da missão já realizada. A equipe ainda precisa desenvolver toda a programação.',
+      examples: ['Em uma missão com Arduino, RGB, botão, potenciômetro e servo, a organização entrega toda a montagem pronta.'],
+    },
+  ]
+  const currentHelpCard = helpCards[carouselIndex]
 
   function toggleHelpCard(id) {
     setSelectedHelpCards((selected) => selected.includes(id) ? [] : [id])
@@ -144,33 +186,39 @@ function App() {
           <span className="text-left"><span className="block text-lg font-bold">Cartas de Ajuda</span><span className="mt-1 block text-sm text-neutral-600">Acesse e escolha uma carta para o grupo.</span></span>
           <span className="ml-auto text-2xl text-indigo-950" aria-hidden="true">→</span>
         </button>
-        </> : helpScreen === 'browse' ? <section className="text-white" aria-labelledby="help-title">
-          <button type="button" onClick={() => setHelpScreen('home')} className="mb-2 rounded-lg px-3 py-1 text-sm font-semibold text-white/80 transition hover:bg-white/10 hover:text-white">← Voltar ao menu principal</button>
+        </> : helpScreen === 'browse' ? <section className="mx-auto flex max-w-5xl flex-col text-white" aria-labelledby="help-title">
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <button type="button" onClick={() => setHelpScreen('home')} className="rounded-lg px-3 py-1 text-left text-xs font-semibold text-white/80 transition hover:bg-white/10 hover:text-white sm:text-sm">← Voltar ao menu principal</button>
+            <span className="shrink-0 text-xs text-white/70">{carouselIndex + 1} / 5</span>
+          </div>
           <h2 id="help-title" className="text-xl font-bold sm:text-2xl">Cartas de Ajuda</h2>
-          <p className="mt-1 text-xs text-white/70 sm:text-sm">Escolha uma carta para o grupo.</p>
-          <div className="mx-auto mt-3 flex max-w-2xl items-center gap-2 sm:gap-4">
-            <button type="button" aria-label="Carta anterior" onClick={() => setCarouselIndex((index) => (index + 4) % 5)} className="grid h-11 w-11 shrink-0 place-items-center self-center rounded-full border border-white/30 bg-white/10 text-3xl leading-none text-white transition hover:bg-white/20">‹</button>
-            <div className="min-w-0 flex-1 overflow-hidden">
-              <div className="flex w-[500%] transition-transform duration-300 motion-reduce:transition-none" style={{ transform: `translateX(-${carouselIndex * 20}%)` }}>
-                {helpCards.map((card) => {
-                  const selected = selectedHelpCards.includes(card.id)
-                  return <button key={card.id} type="button" aria-pressed={selected} onClick={() => toggleHelpCard(card.id)} className="flex w-1/5 shrink-0 flex-col items-center justify-center rounded-2xl bg-transparent p-1 text-white transition hover:-translate-y-0.5">
-                    <img src={`/data/helpcards/${card.id}.png`} alt={`Ilustração da ${card.title}`} className={`h-[min(35dvh,280px)] w-auto max-w-full rounded-xl object-contain ${selected ? 'outline outline-[3px] outline-offset-[3px] outline-amber-400 shadow-[0_0_0_6px_rgba(251,192,45,.2)]' : ''}`} />
-                    <span className="mt-1 text-sm font-bold">{card.title}</span>
-                    <span className="mt-0.5 text-[11px] text-white/70">{selected ? 'Selecionada' : 'Toque para selecionar'}</span>
-                  </button>
-                })}
+          <p className="mt-1 text-xs text-white/70 sm:text-sm">Selecione uma carta para ver seus detalhes.</p>
+          <div className="mt-3 grid min-h-0 flex-1 grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+            <div className="flex min-w-0 flex-col items-center justify-center">
+              <div className="group relative flex w-full flex-1 items-center justify-center">
+                <button type="button" aria-pressed={selectedHelpCards.includes(currentHelpCard.id)} onClick={() => toggleHelpCard(currentHelpCard.id)} className="flex h-full max-h-[min(34dvh,340px)] min-h-0 w-full items-center justify-center rounded-xl bg-transparent p-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300">
+                  <img src={`/data/helpcards/${currentHelpCard.id}.png`} alt={`Ilustração da ${currentHelpCard.title}`} className={`h-full max-h-[min(34dvh,340px)] max-w-full rounded-xl object-contain transition ${selectedHelpCards.includes(currentHelpCard.id) ? 'outline outline-[3px] outline-offset-4 outline-amber-400 shadow-[0_0_0_8px_rgba(251,192,45,.18)]' : ''}`} />
+                </button>
+                <button type="button" onClick={() => setPreviewHelpCard(currentHelpCard.id)} aria-label={`Ver ${currentHelpCard.title} em tela cheia`} className="absolute right-2 top-2 rounded-lg bg-indigo-950/90 px-3 py-2 text-xs font-bold text-white opacity-100 shadow-lg transition hover:bg-indigo-800 focus-visible:opacity-100 md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100">⛶ Tela cheia</button>
               </div>
+              <div className="mt-2 flex w-full items-center justify-between">
+                <button type="button" aria-label="Carta anterior" onClick={() => setCarouselIndex((index) => (index + 4) % 5)} className="px-2 text-4xl font-bold leading-none text-amber-300 transition hover:scale-110 hover:text-white">‹</button>
+                <span className="text-xs text-white/75">{selectedHelpCards.includes(currentHelpCard.id) ? 'Carta selecionada' : 'Clique na carta para selecionar'}</span>
+                <button type="button" aria-label="Próxima carta" onClick={() => setCarouselIndex((index) => (index + 1) % 5)} className="px-2 text-4xl font-bold leading-none text-amber-300 transition hover:scale-110 hover:text-white">›</button>
+              </div>
+              <button type="button" onClick={startUsingHelpCard} disabled={!selectedHelpCards.length} className="mt-2 w-full rounded-xl bg-amber-400 px-4 py-2.5 text-sm font-bold text-indigo-950 transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:opacity-50">Usar Carta de Ajuda</button>
             </div>
-            <button type="button" aria-label="Próxima carta" onClick={() => setCarouselIndex((index) => (index + 1) % 5)} className="grid h-11 w-11 shrink-0 place-items-center self-center rounded-full border border-white/30 bg-white/10 text-3xl leading-none text-white transition hover:bg-white/20">›</button>
-          </div>
-          <div className="mt-2 flex justify-center gap-2" aria-label={`Carta ${carouselIndex + 1} de 5`}>
-            {helpCards.map((card, index) => <button key={card.id} type="button" aria-label={`Ir para Carta ${card.id}`} onClick={() => setCarouselIndex(index)} className={`h-2 rounded-full transition-all ${carouselIndex === index ? 'w-[22px] bg-amber-400' : 'w-2 bg-white/40'}`} />)}
-          </div>
-          <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
-            <button type="button" onClick={() => setPreviewHelpCard(selectedHelpCards[0] ?? carouselIndex + 1)} className="rounded-lg border border-white/30 px-3 py-2 text-xs font-semibold text-white/90 transition hover:bg-white/10 hover:text-white">Ver em tela cheia</button>
-            <span className="text-xs text-white/70">{selectedHelpCards.length} de 1 selecionada</span>
-            <button type="button" onClick={startUsingHelpCard} disabled={!selectedHelpCards.length} className="rounded-xl bg-amber-400 px-4 py-2 text-sm font-bold text-indigo-950 transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:opacity-50">Usar Carta de Ajuda</button>
+            <aside className="flex min-h-0 flex-col justify-center overflow-y-auto rounded-2xl border border-white/15 bg-white/[.06] p-4 text-left sm:p-5" aria-live="polite">
+              <p className="text-[10px] font-bold uppercase tracking-[.2em] text-amber-300">{currentHelpCard.title}</p>
+              <h3 className="mt-1 text-lg font-bold uppercase sm:text-xl">{currentHelpCard.title}</h3>
+              <div className="mt-3 space-y-2.5 text-xs leading-relaxed text-white/80 sm:text-sm">
+                <p><strong className="text-white">Contexto:</strong> {currentHelpCard.context}</p>
+                <p><strong className="text-white">Efeito:</strong> {currentHelpCard.effect}</p>
+                <div className="rounded-xl bg-black/20 p-3"><strong className="text-amber-200">Exemplos:</strong><ul className="mt-1 list-disc space-y-1 pl-4">{currentHelpCard.examples.map((example) => <li key={example}>{example}</li>)}</ul></div>
+                <p><strong className="text-white">Função:</strong> {currentHelpCard.purpose}</p>
+                {currentHelpCard.id === 3 && <p className="text-[11px] text-white/65">Regra: o fragmento nunca pode representar a solução completa da missão.</p>}
+              </div>
+            </aside>
           </div>
         </section>
         : <section className="mx-auto max-w-xl text-white" aria-labelledby="use-help-title">
